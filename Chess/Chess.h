@@ -4,6 +4,7 @@
 class Chess
 {
 public:
+	Chess();
 	int Run();
 private:
 	void render();

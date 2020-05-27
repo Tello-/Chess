@@ -3,6 +3,10 @@
 #include <string>
 
 
+Chess::Chess()
+{
+}
+
 int Chess::Run()
 {	
 	while (true)
