@@ -80,3 +80,8 @@ void Chess::drawBoard(char pieces[64])
 		std::cout << full_bar << std::endl;
 	}
 }
+
+bool Chess::validateMove()
+{
+	return false;
+}
