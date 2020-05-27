@@ -3,18 +3,32 @@
 #include <string>
 
 
-Chess::Chess()
+Chess::Chess() : current{ State::PLAYER1 }, gameFinished{ false }
 {
 }
 
 int Chess::Run()
 {	
+	if (!gameFinished) reset();
 	while (true)
 	{
-
+		input();
+		update();
 		render();
 	}
 	return 0;
+}
+
+void Chess::reset()
+{
+}
+
+void Chess::input()
+{
+}
+
+void Chess::update()
+{
 }
 
 void Chess::render()
