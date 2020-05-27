@@ -10,6 +10,8 @@ public:
 private:
 	void reset();
 	void input();
+	void p1_input();
+	void p2_input();
 	void update();
 	void render();
 	void drawBoard(char pieces[64]); // Putting this here, no need for a Board.h class yet

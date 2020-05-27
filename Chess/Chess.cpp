@@ -25,6 +25,23 @@ void Chess::reset()
 
 void Chess::input()
 {
+	switch (current)
+	{
+	case Chess::PLAYER1:
+		p1_input();
+		break;
+	case Chess::PLAYER2:
+		p2_input();
+		break;
+	}
+}
+
+void Chess::p1_input() // allow p1 pieces to be interacted with
+{
+}
+
+void Chess::p2_input() // allow p2 pieces to be interacted with
+{
 }
 
 void Chess::update()
