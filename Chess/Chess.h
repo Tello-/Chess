@@ -20,30 +20,35 @@ enum File { A = 1, B, C, D, E, F, G, H };
 class Chess
 {
 public:
-				Chess();
-	int			Run();
+				Chess		();
+	int			Run			();
 	
 private:
-	void			initState();
-	void			initBoard();
-	void			reset();
-	void			input();
-	void			update(); // update internal state based on input
-	void			render();
-	void			drawBoard(COORD); // Putting this here, no need for a Board.h class yet
-	void			drawPrompt(COORD) const;
-	void			getUserInput();
+	void			initState			();
+	void			initBoard			();
+	void			reset			();
+	void			input			();
+	void			update			(); // update internal state based on input
+	void			render			();
+	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
+	void			drawPrompt		(COORD) const;
+	void			getUserInput		();
 
-	bool			validateMove(File sFile, int sRow, 
-						   File dFile, int dRow) const;
-	void			movePiece();
+	bool			validateMove		(File sFile, int sRow, 
+								File dFile, int dRow);
+
+	bool			validateSyntax		(std::string untestedInput);
+	bool			validateOwner		(File file, int row, int potentialOwner);
+		
+	void			movePiece		();
 
 	
-	State		current;
+	State		currentState;
+	int			currentPlayer;
 	bool			gameFinished;
 	COORD		boardCoord;
 	COORD		promptCoord;
-	std::string	source;
+	std::string	userInput;
 	std::string	destination;
 	Piece		pieceLayout[8][File::H];
 };

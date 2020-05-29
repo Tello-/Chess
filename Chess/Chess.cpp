@@ -2,7 +2,7 @@
 
 
 
-Chess::Chess() : gameFinished{ false }, boardCoord{ COORD() }, current{ State::P1_SOURCE_CHOICE }
+Chess::Chess() : gameFinished{ false }, boardCoord{ COORD() }, currentState{ State::P1_SOURCE_CHOICE }, currentPlayer{1}
 {
 	promptCoord.X = 0;
 	promptCoord.Y = 52;
@@ -13,23 +13,27 @@ int Chess::Run()
 {	
 	while (true)
 	{
-		
+		// this whole while loop, especially the state switch need to be re considered
 		drawBoard(boardCoord);
 		drawPrompt(promptCoord);
 		getUserInput();
-		switch (current)
+		validateMove(File{}, int{}, File{}, int{}); // TODO add real arguments
+
+		switch (currentState)
 		{
 		case P1_SOURCE_CHOICE:
-			current = P1_DEST_CHOICE;
+			currentState = P1_DEST_CHOICE;
 			break;
 		case P2_SOURCE_CHOICE:
-			current = P2_DEST_CHOICE;
+			currentState = P2_DEST_CHOICE;
 			break;
 		case P1_DEST_CHOICE:
-			current = P2_SOURCE_CHOICE;
+			currentState = P2_SOURCE_CHOICE;
+			currentPlayer = 2;
 			break;
 		case P2_DEST_CHOICE:
-			current = P1_SOURCE_CHOICE;
+			currentState = P1_SOURCE_CHOICE;
+			currentPlayer = 1;
 			break;
 		default:
 			break;
@@ -74,7 +78,7 @@ void Chess::initBoard()
 
 void Chess::reset()
 {
-	current = P1_SOURCE_CHOICE;
+	currentState = P1_SOURCE_CHOICE;
 	initBoard();
 }
 
@@ -116,15 +120,15 @@ void Chess::drawBoard(COORD coord)
 void Chess::drawPrompt(COORD coord) const
 {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-	switch (current)
+	switch (currentState)
 	{
 	case P1_SOURCE_CHOICE:
 	case P2_SOURCE_CHOICE:
-		std::cout << "Player " << current << ": Which piece would you like to move? (ex a1): ";
+		std::cout << "Player " << currentPlayer << ": Which piece would you like to move? (ex a1): ";
 		break;
 	case P1_DEST_CHOICE:
 	case P2_DEST_CHOICE:
-		std::cout << "Player " << current - 2 << ":    Where would you like to move to? (ex a1): ";
+		std::cout << "Player " << currentPlayer << ":    Where would you like to move to? (ex a1): ";
 	}
 }
 
@@ -134,20 +138,47 @@ void Chess::getUserInput()
 	CONSOLE_SCREEN_BUFFER_INFO bufferInfo;
 	GetConsoleScreenBufferInfo(hndl, &bufferInfo);
 	COORD coord{ bufferInfo.dwCursorPosition };
-	std::cout << "  ";
+	
+	GetConsoleScreenBufferInfo(hndl, &bufferInfo);
+	while (bufferInfo.dwCursorPosition.X != 0)
+	{
+		std::cout << " ";
+		GetConsoleScreenBufferInfo(hndl, &bufferInfo);
+	}
+	
 	SetConsoleCursorPosition(hndl, coord);
-	std::cin >> source;
+	std::cin >> userInput;
 }
 
-bool Chess::validateMove(File sFile, int sRow, File dFile, int dRow) const
-{
-	bool ownerMatch{ false };
-	bool rangeMatch{ true }; //TODO add range check logic, make sure to change true to false in final build
-
-	if (pieceLayout[sRow][sFile].ownerID == current) ownerMatch = true;
+bool Chess::validateMove(File sFile, int sRow, File dFile, int dRow)
+{	
 	
+	if (!validateSyntax(userInput) ||
+		!validateOwner(sFile, sRow, currentPlayer)) return false;
 
-	if (ownerMatch && rangeMatch) return true;
+	else return true;
+	   
+	
+	bool rangeMatch{ true }; 
+	//TODO add range check logic, make sure to change true to false in final build
+
+
+}
+
+bool Chess::validateSyntax(std::string untestedInput)
+{
+	bool syntaxMatch{ false };
+	if (untestedInput.size() != 2  ||
+		untestedInput[0]	< 'A' ||
+		untestedInput[0]	> 'H' ||
+		untestedInput[1]    <  1  ||
+		untestedInput[1]	>  8) return false;
+	else return true;
+}
+
+bool Chess::validateOwner(File file, int row, int potentialOwner)
+{
+	if (pieceLayout[row][file].ownerID == potentialOwner) return true;
 	else return false;
 }
 
