@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <string>
 #include <Windows.h>
 
 
@@ -12,7 +14,7 @@ struct Piece
 };
 
 
-enum State { PLAYER1=1, PLAYER2, GAME_OVER };
+enum State { P1_SOURCE_CHOICE = 1, P2_SOURCE_CHOICE = 2, P1_DEST_CHOICE, P2_DEST_CHOICE};
 enum File { A = 1, B, C, D, E, F, G, H };
 
 class Chess
@@ -30,9 +32,9 @@ private:
 	void			render();
 	void			drawBoard(COORD); // Putting this here, no need for a Board.h class yet
 	void			drawPrompt(COORD) const;
+	void			getUserInput();
 
-	bool			validateMove(State state, 
-						   File sFile, int sRow, 
+	bool			validateMove(File sFile, int sRow, 
 						   File dFile, int dRow) const;
 	void			movePiece();
 
@@ -41,7 +43,8 @@ private:
 	bool			gameFinished;
 	COORD		boardCoord;
 	COORD		promptCoord;
-
+	std::string	source;
+	std::string	destination;
 	Piece		pieceLayout[8][File::H];
 };
 
