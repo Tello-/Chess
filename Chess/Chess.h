@@ -3,10 +3,16 @@
 
 struct Piece
 {
+	Piece() = default;
+	Piece(int oID, char sym) : ownerID{ oID }, symbol{ sym } {}
 	int			ownerID{ 0 };
-	char			logo{ ' ' };
+	char			symbol{ ' ' };
 	// TODO implement move pattern somehow
 };
+
+
+enum State { PLAYER1=1, PLAYER2, GAME_OVER };
+enum File { A = 1, B, C, D, E, F, G, H };
 
 class Chess
 {
@@ -15,20 +21,21 @@ public:
 	int			Run();
 	
 private:
+	void			initState();
+	void			initBoard();
 	void			reset();
 	void			input();
-	void			p1_input(); // called during State::PLAYER1
-	void			p2_input(); // called during State::PLAYER2
 	void			update(); // update internal state based on input
 	void			render();
-	void			drawBoard(char pieces[64]); // Putting this here, no need for a Board.h class yet
+	void			drawBoard(/*const Piece[8][8]*/); // Putting this here, no need for a Board.h class yet
 
-	bool			validateMove(/*TODO: Fill in some paramters to validate*/);
+	bool			validateMove(State state, File sFile, int sRow, File dFile, int dRow) const;
 
-	enum State	{PLAYER1, PLAYER2};
+	
 	State		current;
-
 	bool			gameFinished;
+
+	Piece		pieceLayout[8][File::H];
 };
 
 
