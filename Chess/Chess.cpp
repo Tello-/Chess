@@ -1,11 +1,12 @@
 #include "Chess.h"
 #include <iostream>
 #include <string>
-#include <Windows.h>
 
 
-Chess::Chess() : gameFinished{false}, current{State::PLAYER1}
+Chess::Chess() : gameFinished{ false }, boardCoord{ COORD() }, current{ State::PLAYER1 }
 {
+	promptCoord.X = 0;
+	promptCoord.Y = 52;
 	reset();
 }
 
@@ -67,13 +68,7 @@ void Chess::reset()
 
 void Chess::input()
 {
-	switch (current)
-	{
-	case State::PLAYER1:
-		break;
-	case State::PLAYER2:
-		break;
-	}
+	
 }
 
 void Chess::update()
@@ -82,10 +77,11 @@ void Chess::update()
 
 void Chess::render()
 {
-	drawBoard(/*pieceLayout*/); // TODO: replace NULL placeholder
+	drawBoard(boardCoord);
+	drawPrompt(promptCoord);
 }
 
-void Chess::drawBoard(/*const Piece pieces[8][8]*/)
+void Chess::drawBoard(COORD coord)
 {
 	std::string file_bar	{ "     A         B        C        D        E        F        G        H     " };
 	std::string full_bar	{ " ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" };
@@ -93,14 +89,11 @@ void Chess::drawBoard(/*const Piece pieces[8][8]*/)
 	std::string open_bar	{ "::   " };
 	std::string close_bar	{ "   ::" };
 	
-	COORD coord;
-	coord.X = 0;
-	coord.Y = 0;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 
 	std::cout << file_bar << std::endl;
 	std::cout << full_bar << std::endl;
-	for (int iRow = 0; iRow < 8; ++iRow)
+	for (int iRow = 7; iRow >= 0; --iRow)
 	{
 		std::cout << dotted_bar << std::endl;
 		std::cout << dotted_bar << std::endl;
@@ -112,6 +105,7 @@ void Chess::drawBoard(/*const Piece pieces[8][8]*/)
 			std::cout << pieceLayout[iRow][iFile].symbol << close_bar;
 			++iFile;
 		}
+		std::cout << iRow + 1;
 		std::cout << std::endl;
 		std::cout << dotted_bar << std::endl;
 		std::cout << dotted_bar << std::endl;
@@ -121,7 +115,24 @@ void Chess::drawBoard(/*const Piece pieces[8][8]*/)
 	std::cout << file_bar << std::endl;
 }
 
+void Chess::drawPrompt(COORD coord) const
+{
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	std::cout << "Player " << current << ", which piece would you like to move? (ex a1): ";
+}
+
 bool Chess::validateMove(State state, File sFile, int sRow, File dFile, int dRow) const
 {
-	return false;
+	bool ownerMatch{ false };
+	bool rangeMatch{ true }; //TODO add range check logic, make sure to change true to false in final build
+
+	if (pieceLayout[sRow][sFile].ownerID == state) ownerMatch = true;
+	
+
+	if (ownerMatch && rangeMatch) return true;
+	else return false;
+}
+
+void Chess::movePiece()
+{
 }

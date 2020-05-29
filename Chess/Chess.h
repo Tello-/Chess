@@ -1,13 +1,14 @@
 #pragma once
+#include <Windows.h>
 
 
 struct Piece
 {
 	Piece() = default;
-	Piece(int oID, char sym) : ownerID{ oID }, symbol{ sym } {}
+	Piece(int oID, char sym, int* ofs) : ownerID{ oID }, symbol{ sym } { offset = ofs; }
 	int			ownerID{ 0 };
 	char			symbol{ ' ' };
-	// TODO implement move pattern somehow
+	int*			offset; // a test offset...
 };
 
 
@@ -27,13 +28,19 @@ private:
 	void			input();
 	void			update(); // update internal state based on input
 	void			render();
-	void			drawBoard(/*const Piece[8][8]*/); // Putting this here, no need for a Board.h class yet
+	void			drawBoard(COORD); // Putting this here, no need for a Board.h class yet
+	void			drawPrompt(COORD) const;
 
-	bool			validateMove(State state, File sFile, int sRow, File dFile, int dRow) const;
+	bool			validateMove(State state, 
+						   File sFile, int sRow, 
+						   File dFile, int dRow) const;
+	void			movePiece();
 
 	
 	State		current;
 	bool			gameFinished;
+	COORD		boardCoord;
+	COORD		promptCoord;
 
 	Piece		pieceLayout[8][File::H];
 };
