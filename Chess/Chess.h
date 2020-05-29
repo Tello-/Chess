@@ -26,12 +26,8 @@ public:
 	int			Run			     ();
 	
 private:
-	void			initState			();
 	void			initBoard			();
 	void			reset			();
-	void			input			();
-	void			update			(); // update internal state based on input
-	void			render			();
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
 	void			drawPrompt		(COORD) const;
 	
@@ -61,17 +57,3 @@ private:
 	Piece		targetPiece; // note! blank squares are also considered a "Piece"
 
 };
-
-
-
-
-
-//char defaultSetup[64] = { 'R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R',
-//					 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-//					 ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-//					 ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-//					 ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-//					 ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-//					 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-//					 'R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R' 
-//					};
