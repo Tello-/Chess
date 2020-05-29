@@ -2,10 +2,13 @@
 
 
 
-Chess::Chess() : gameFinished{ false }, boardCoord{ COORD() }, currentState{ State::P1_SOURCE_CHOICE }, currentPlayer{1}
+Chess::Chess() 
+	: gameFinished{ false }, boardCoord{ COORD() }, currentState{ State::P1_SOURCE_CHOICE }, currentPlayer{1}
 {
 	promptCoord.X = 0;
 	promptCoord.Y = 52;
+	inputCoord.X = 48;
+	inputCoord.Y = promptCoord.Y;
 	initBoard();
 }
 
@@ -13,31 +16,33 @@ int Chess::Run()
 {	
 	while (true)
 	{
-		// this whole while loop, especially the state switch need to be re considered
-		drawBoard(boardCoord);
-		drawPrompt(promptCoord);
-		getUserInput();
-		validateMove(File{}, int{}, File{}, int{}); // TODO add real arguments
-
-		switch (currentState)
+		
+		while (true)
 		{
-		case P1_SOURCE_CHOICE:
-			currentState = P1_DEST_CHOICE;
-			break;
-		case P2_SOURCE_CHOICE:
-			currentState = P2_DEST_CHOICE;
-			break;
-		case P1_DEST_CHOICE:
-			currentState = P2_SOURCE_CHOICE;
-			currentPlayer = 2;
-			break;
-		case P2_DEST_CHOICE:
-			currentState = P1_SOURCE_CHOICE;
-			currentPlayer = 1;
-			break;
-		default:
-			break;
+			drawBoard(boardCoord);
+			drawPrompt(promptCoord);
+			getUserInputAndValidate();
+			activePiece = pieceLayout[inputRow][inputFile];
+			advanceState();
+
+			drawPrompt(promptCoord);
+			do
+			{
+				getUserInputAndValidate();
+				targetPiece = pieceLayout[inputRow][inputFile];
+				// TODO check for range validation
+				// Check for target ownership validation...
+
+			} while ();
+
+			//TODO check if target piece is 1: Blank or 2: ActivePlayers own piece or 3: Occupied by other player
+			
+			
+			
+			advanceState();
 		}
+
+
 	}
 	return 0;
 }
@@ -124,21 +129,32 @@ void Chess::drawPrompt(COORD coord) const
 	{
 	case P1_SOURCE_CHOICE:
 	case P2_SOURCE_CHOICE:
-		std::cout << "Player " << currentPlayer << ": Which piece would you like to move? (ex a1): ";
+		std::cout << "Player " << currentPlayer << ": Which piece would you like to move?: ";
 		break;
 	case P1_DEST_CHOICE:
 	case P2_DEST_CHOICE:
-		std::cout << "Player " << currentPlayer << ":    Where would you like to move to? (ex a1): ";
+		std::cout << "Player " << currentPlayer << ":    Where would you like to move to?: ";
 	}
+}
+
+void Chess::getUserInputAndValidate()
+{
+	do
+	{
+		getUserInput();
+	} while (!validateSyntax(userInput) ||
+		!validateOwner(File(userInput[1] - ASCII_LETTER_OFFSET),
+			userInput[0] - ASCII_NUMBER_OFFSET, currentPlayer));
+
+	inputFile = File(userInput[1] - ASCII_LETTER_OFFSET);
+	inputRow = userInput[0] - ASCII_NUMBER_OFFSET;
 }
 
 void Chess::getUserInput()
 {
 	HANDLE hndl = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hndl, inputCoord);
 	CONSOLE_SCREEN_BUFFER_INFO bufferInfo;
-	GetConsoleScreenBufferInfo(hndl, &bufferInfo);
-	COORD coord{ bufferInfo.dwCursorPosition };
-	
 	GetConsoleScreenBufferInfo(hndl, &bufferInfo);
 	while (bufferInfo.dwCursorPosition.X != 0)
 	{
@@ -146,23 +162,9 @@ void Chess::getUserInput()
 		GetConsoleScreenBufferInfo(hndl, &bufferInfo);
 	}
 	
-	SetConsoleCursorPosition(hndl, coord);
+	SetConsoleCursorPosition(hndl, inputCoord);
 	std::cin >> userInput;
-}
-
-bool Chess::validateMove(File sFile, int sRow, File dFile, int dRow)
-{	
-	
-	if (!validateSyntax(userInput) ||
-		!validateOwner(sFile, sRow, currentPlayer)) return false;
-
-	else return true;
-	   
-	
-	bool rangeMatch{ true }; 
-	//TODO add range check logic, make sure to change true to false in final build
-
-
+	userInput.resize(2);
 }
 
 bool Chess::validateSyntax(std::string untestedInput)
@@ -171,17 +173,40 @@ bool Chess::validateSyntax(std::string untestedInput)
 	if (untestedInput.size() != 2  ||
 		untestedInput[0]	< 'A' ||
 		untestedInput[0]	> 'H' ||
-		untestedInput[1]    <  1  ||
-		untestedInput[1]	>  8) return false;
+		untestedInput[1]-48 <  1  ||
+		untestedInput[1]-48	>  8) return false;
 	else return true;
 }
 
 bool Chess::validateOwner(File file, int row, int potentialOwner)
 {
-	if (pieceLayout[row][file].ownerID == potentialOwner) return true;
+	if (pieceLayout[row-1][file-1].ownerID == potentialOwner) return true;
 	else return false;
 }
 
 void Chess::movePiece()
 {
+}
+
+void Chess::advanceState()
+{
+	switch (currentState)
+	{
+	case P1_SOURCE_CHOICE:
+		currentState = P1_DEST_CHOICE;
+		break;
+	case P2_SOURCE_CHOICE:
+		currentState = P2_DEST_CHOICE;
+		break;
+	case P1_DEST_CHOICE:
+		currentState = P2_SOURCE_CHOICE;
+		currentPlayer = 2;
+		break;
+	case P2_DEST_CHOICE:
+		currentState = P1_SOURCE_CHOICE;
+		currentPlayer = 1;
+		break;
+	default:
+		break;
+	}
 }

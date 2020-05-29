@@ -3,6 +3,8 @@
 #include <string>
 #include <Windows.h>
 
+#define ASCII_LETTER_OFFSET 48
+#define ASCII_NUMBER_OFFSET 64
 
 struct Piece
 {
@@ -20,8 +22,8 @@ enum File { A = 1, B, C, D, E, F, G, H };
 class Chess
 {
 public:
-				Chess		();
-	int			Run			();
+				Chess		     ();
+	int			Run			     ();
 	
 private:
 	void			initState			();
@@ -32,15 +34,16 @@ private:
 	void			render			();
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
 	void			drawPrompt		(COORD) const;
+	
+	
+	void			getUserInputAndValidate   ();
 	void			getUserInput		();
-
-	bool			validateMove		(File sFile, int sRow, 
-								File dFile, int dRow);
-
 	bool			validateSyntax		(std::string untestedInput);
 	bool			validateOwner		(File file, int row, int potentialOwner);
 		
-	void			movePiece		();
+	void			movePiece		     ();
+
+	void			advanceState        ();
 
 	
 	State		currentState;
@@ -48,9 +51,15 @@ private:
 	bool			gameFinished;
 	COORD		boardCoord;
 	COORD		promptCoord;
+	COORD		inputCoord;
 	std::string	userInput;
+	File			inputFile;
+	int			inputRow;
 	std::string	destination;
 	Piece		pieceLayout[8][File::H];
+	Piece		activePiece;
+	Piece		targetPiece; // note! blank squares are also considered a "Piece"
+
 };
 
 
