@@ -107,11 +107,29 @@ void Chess::drawBoard(COORD coord)
 	}
 
 	COORD tempCoord;
-	tempCoord.X = 4;
+	
 	tempCoord.Y = 2;
-
-	printWhiteSquare(tempCoord, 7, 5);
-
+	for (int i = 0; i < 4; ++i)
+	{
+		tempCoord.X = 4;
+		for (int i = 0; i < 4; ++i)
+		{
+			printWhiteSquare(tempCoord, 7, 5);
+			tempCoord.X = tempCoord.X + 18;
+		}		
+		tempCoord.Y = tempCoord.Y + 12;
+	}
+	tempCoord.Y = 8;
+	for (int i = 0; i < 4; ++i)
+	{
+		tempCoord.X = 13;
+		for (int i = 0; i < 4; ++i)
+		{
+			printWhiteSquare(tempCoord, 7, 5);
+			tempCoord.X = tempCoord.X + 18;
+		}
+		tempCoord.Y = tempCoord.Y + 12;
+	}
 }
 
 void Chess::drawPrompt(COORD coord) const
@@ -144,7 +162,7 @@ void Chess::printWhiteSquare(COORD pos, int width, int height)
 	{
 		// TODO handle failure
 	}
-
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY);
 	std::vector<std::string> spaces;
 	for (int i = 0; i < width; ++i)
 	{
@@ -154,7 +172,7 @@ void Chess::printWhiteSquare(COORD pos, int width, int height)
 	for (int i = 0; i < 5; ++i)
 	{
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY);
+		
 		for (auto i : spaces)
 		{
 			std::cout << i;
@@ -162,7 +180,7 @@ void Chess::printWhiteSquare(COORD pos, int width, int height)
 		pos.Y = pos.Y + 1;
 	}
 	
-
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), returnTemp);  // restore print color back to what it was
 }
 
 bool Chess::GetColor(short& ret)
