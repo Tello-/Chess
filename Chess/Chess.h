@@ -3,8 +3,15 @@
 #include <string>
 #include <Windows.h>
 
+
+#define CONSOLE_BUFFER_X 150
+#define CONSOLE_BUFFER_Y 52
+#define CONSOLE_WINDOW_X (CONSOLE_BUFFER_X - 1)
+#define CONSOLE_WINDOW_Y (CONSOLE_BUFFER_Y - 1)
 #define ASCII_LETTER_OFFSET 48
 #define ASCII_NUMBER_OFFSET 64
+#define BOARD_FOOTPRINT_X 76
+#define BOARD_FOOTPRINT_Y 51
 
 struct Piece
 {
@@ -25,6 +32,7 @@ public:
 	int			Run			     ();
 	
 private:
+	void           initConsole         ();
 	void			initBoard			();
 	void			reset			();
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
@@ -47,3 +55,5 @@ private:
 	
 
 };
+
+

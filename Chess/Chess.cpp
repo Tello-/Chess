@@ -5,57 +5,38 @@
 Chess::Chess() 
 	: gameFinished{ false }, boardCoord{ COORD() }, currentPlayer{1}
 {
-	promptCoord.X = 0;
-	promptCoord.Y = 52;
 	inputCoord.X = 48;
-	inputCoord.Y = promptCoord.Y;
-	initBoard();
+	inputCoord.Y = promptCoord.Y;	
 }
 
 int Chess::Run()
 {	
+	initConsole();
+	initBoard();
 	while (true)
 	{
-		
-		
-
-
+		drawBoard(COORD{});
 	}
 	return 0;
 }
 
+void Chess::initConsole()
+{	
+	COORD initCoord;
+	initCoord.X = CONSOLE_BUFFER_X;
+	initCoord.Y = CONSOLE_BUFFER_Y;
+	SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), initCoord);
+	SMALL_RECT initRect;
+	initRect.Top = 0;
+	initRect.Left = 0;
+	initRect.Right = CONSOLE_WINDOW_X;
+	initRect.Bottom = CONSOLE_WINDOW_Y;
+	SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, &initRect);	
+}
+
 void Chess::initBoard()
 {
-	char temp[8] = { 'R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R' };
-	for (int i = 0; i < 8; ++i)
-	{
-		for (int j = 0; j < 8; ++j)
-		{
-			switch (i)
-			{
-			case 1:
-				pieceLayout[i][j].symbol = 'P';
-				pieceLayout[i][j].ownerID = 1;
-				break;
-			case 6:
-				pieceLayout[i][j].symbol = 'P';
-				pieceLayout[i][j].ownerID = 2;
-				break;
-			case 0:
-				pieceLayout[i][j].symbol = temp[j];
-				pieceLayout[i][j].ownerID = 1;
-				break;
-			case 7:
-				pieceLayout[i][j].symbol = temp[j];
-				pieceLayout[i][j].ownerID = 2;
-				break;
-			default:
-				pieceLayout[i][j].symbol = ' ';
-				pieceLayout[i][j].ownerID = 0;
-				break;
-			}
-		}
-	}
+	
 }
 
 void Chess::reset()
@@ -64,39 +45,27 @@ void Chess::reset()
 	initBoard();
 }
 
-
 void Chess::drawBoard(COORD coord)
 {
 	std::string file_bar	{ "     A         B        C        D        E        F        G        H     " };
-	std::string full_bar	{ " ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" };
-	std::string dotted_bar	{ " ::       ::       ::       ::       ::       ::       ::       ::       ::" };
-	std::string open_bar	{ "::   " };
-	std::string close_bar	{ "   ::" };
+	std::string full_bar	{ "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" };
+	std::string dotted_bar	{ "::       ::       ::       ::       ::       ::       ::       ::       ::" };
+	std::string color_dash   { "       " };
+	
 	
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-
-	std::cout << file_bar << std::endl;
-	std::cout << full_bar << std::endl;
+	std::cout << " " << file_bar << std::endl;
+	std::cout << " " << full_bar << std::endl;
 	for (int iRow = 7; iRow >= 0; --iRow)
 	{
-		std::cout << dotted_bar << std::endl;
-		std::cout << dotted_bar << std::endl;
-
-		int iFile = 0;
-		for (int iCol = 0; iCol < 8; ++iCol)
-		{
-			iCol == 0 ? std::cout << iRow+1 << open_bar : std::cout << "   ";
-			std::cout << pieceLayout[iRow][iFile].symbol << close_bar;
-			++iFile;
-		}
-		std::cout << iRow + 1;
-		std::cout << std::endl;
-		std::cout << dotted_bar << std::endl;
-		std::cout << dotted_bar << std::endl;
-		std::cout << full_bar << std::endl;
-		
+		std::cout << " " << dotted_bar << std::endl;
+		std::cout << " " << dotted_bar << std::endl;		
+		std::cout << iRow + 1 << dotted_bar << iRow + 1 << std::endl;
+		std::cout << " " << dotted_bar << std::endl;
+		std::cout << " " << dotted_bar << std::endl;
+		std::cout << " " << full_bar << std::endl;		
 	}
-	std::cout << file_bar << std::endl;
+	std::cout << " " << file_bar << std::endl;
 }
 
 void Chess::drawPrompt(COORD coord) const
