@@ -155,7 +155,7 @@ void Chess::hidecursor()
 	SetConsoleCursorInfo(consoleHandle, &info);
 }
 
-void Chess::printWhiteSquare(COORD pos, int width, int height)
+void Chess::printWhiteSquare(COORD pos, int width, int height) // TODO adapt this to take any color
 {
 	short returnTemp;
 	if (!GetColor(returnTemp))
