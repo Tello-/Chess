@@ -106,6 +106,12 @@ void Chess::drawBoard(COORD coord)
 		boardNeedsRedraw = false;
 	}
 
+	COORD tempCoord;
+	tempCoord.X = 4;
+	tempCoord.Y = 2;
+
+	printWhiteSquare(tempCoord, 7, 5);
+
 }
 
 void Chess::drawPrompt(COORD coord) const
@@ -144,12 +150,18 @@ void Chess::printWhiteSquare(COORD pos, int width, int height)
 	{
 		spaces.push_back(" ");
 	}
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY);
-	for (auto i : spaces)
+
+	for (int i = 0; i < 5; ++i)
 	{
-		std::cout << i;
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY);
+		for (auto i : spaces)
+		{
+			std::cout << i;
+		}
+		pos.Y = pos.Y + 1;
 	}
+	
 
 }
 
