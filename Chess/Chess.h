@@ -43,8 +43,10 @@ private:
 
 	void			advanceState        ();
 
-	
-	
+	void			hidecursor();
+	void			printWhiteSquare(COORD, int, int);
+	bool			GetColor(short& ret);
+	bool			boardNeedsRedraw;
 	int			currentPlayer;
 	bool			gameFinished;
 	COORD		boardCoord;
@@ -53,7 +55,7 @@ private:
 	
 	Piece		pieceLayout[8][File::H];
 	
-
+	std::string    boardAscii;
 };
 
 
