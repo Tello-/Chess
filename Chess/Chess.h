@@ -16,7 +16,6 @@ struct Piece
 };
 
 
-enum State { P1_SOURCE_CHOICE = 1, P2_SOURCE_CHOICE = 2, P1_DEST_CHOICE, P2_DEST_CHOICE};
 enum File { A = 1, B, C, D, E, F, G, H };
 
 class Chess
@@ -32,28 +31,19 @@ private:
 	void			drawPrompt		(COORD) const;
 	
 	
-	void			getUserInputAndValidate   ();
-	void			getUserInput		();
-	bool			validateSyntax		(std::string untestedInput);
-	bool			validateOwner		(File file, int row, int potentialOwner);
-		
 	void			movePiece		     ();
 
 	void			advanceState        ();
 
 	
-	State		currentState;
+	
 	int			currentPlayer;
 	bool			gameFinished;
 	COORD		boardCoord;
 	COORD		promptCoord;
 	COORD		inputCoord;
-	std::string	userInput;
-	File			inputFile;
-	int			inputRow;
-	std::string	destination;
+	
 	Piece		pieceLayout[8][File::H];
-	Piece		activePiece;
-	Piece		targetPiece; // note! blank squares are also considered a "Piece"
+	
 
 };
