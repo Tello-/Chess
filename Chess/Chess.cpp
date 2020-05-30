@@ -4,68 +4,77 @@
 
 
 Chess::Chess() 
-	: gameFinished{ false }, boardCoord{ COORD() }, currentPlayer{ 1 }, boardNeedsRedraw{ true }
+	: gameFinished{ false }, boardCoord{ COORD() }, pieceCoord{ COORD{} }, currentPlayer{ 1 }, boardNeedsRedraw{ true }
 {
 		boardAscii = "       A        B        C        D        E        F        G        H\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"8 ::       ::       ::       ::       ::       ::       ::       ::       :: 8\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"7 ::       ::       ::       ::       ::       ::       ::       ::       :: 7\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"6 ::       ::       ::       ::       ::       ::       ::       ::       :: 6\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"5 ::       ::       ::       ::       ::       ::       ::       ::       :: 5\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"4 ::       ::       ::       ::       ::       ::       ::       ::       :: 4\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"3 ::       ::       ::       ::       ::       ::       ::       ::       :: 3\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"2 ::       ::       ::       ::       ::       ::       ::       ::       :: 2\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"1 ::       ::       ::       ::       ::       ::       ::       ::       :: 1\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-"       A        B        C        D        E        F        G        H\n";
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"8 ::       ::       ::       ::       ::       ::       ::       ::       :: 8\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"7 ::       ::       ::       ::       ::       ::       ::       ::       :: 7\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"6 ::       ::       ::       ::       ::       ::       ::       ::       :: 6\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"5 ::       ::       ::       ::       ::       ::       ::       ::       :: 5\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"4 ::       ::       ::       ::       ::       ::       ::       ::       :: 4\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"3 ::       ::       ::       ::       ::       ::       ::       ::       :: 3\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"2 ::       ::       ::       ::       ::       ::       ::       ::       :: 2\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"1 ::       ::       ::       ::       ::       ::       ::       ::       :: 1\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"       A        B        C        D        E        F        G        H\n";
+
+		boardCoord.X = 0;
+		boardCoord.Y = 0;
+		pieceCoord.X = 7;
+		pieceCoord.Y = 4;
 }
 
 int Chess::Run()
 {	
 	initConsole();
-	initBoard();
+	initPieces();
 	while (true)
 	{
-		drawBoard(COORD{});
+		if (boardNeedsRedraw)
+		{
+			drawBoard(boardCoord);
+		}
+		printPieces(pieceCoord);
 	}
 	return 0;
 }
@@ -85,15 +94,43 @@ void Chess::initConsole()
 	hidecursor();
 }
 
-void Chess::initBoard()
+void Chess::initPieces()
 {
-	
+	char temp[8] = { 'R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R' };
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			switch (i)
+			{
+			case 1:
+				pieceLayout[i][j].symbol = 'P';
+				pieceLayout[i][j].ownerID = 1;
+				break;
+			case 6:
+				pieceLayout[i][j].symbol = 'P';
+				pieceLayout[i][j].ownerID = 2;
+				break;
+			case 0:
+				pieceLayout[i][j].symbol = temp[j];
+				pieceLayout[i][j].ownerID = 1;
+				break;
+			case 7:
+				pieceLayout[i][j].symbol = temp[j];
+				pieceLayout[i][j].ownerID = 2;
+				break;
+			default:
+				pieceLayout[i][j].symbol = ' ';
+				pieceLayout[i][j].ownerID = 0;
+				break;
+			}
+		}
+	}
 }
 
 void Chess::reset()
 {
 	
-	initBoard();
 }
 
 void Chess::drawBoard(COORD coord)
@@ -132,11 +169,7 @@ void Chess::drawBoard(COORD coord)
 	}
 }
 
-void Chess::drawPrompt(COORD coord) const
-{
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-	
-}
+
 void Chess::movePiece()
 {
 }
@@ -162,7 +195,7 @@ void Chess::printWhiteSquare(COORD pos, int width, int height) // TODO adapt thi
 	{
 		// TODO handle failure
 	}
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_BLUE);
 	std::vector<std::string> spaces;
 	for (int i = 0; i < width; ++i)
 	{
@@ -173,14 +206,39 @@ void Chess::printWhiteSquare(COORD pos, int width, int height) // TODO adapt thi
 	{
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 		
-		for (auto i : spaces)
+		for (auto j : spaces)
 		{
-			std::cout << i;
+			std::cout << j;
 		}
 		pos.Y = pos.Y + 1;
 	}
 	
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), returnTemp);  // restore print color back to what it was
+}
+
+void Chess::printPieces(COORD pos)
+{
+	short preserveColor;
+	GetColor(preserveColor);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED| FOREGROUND_INTENSITY);
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+
+	COORD printCoord = pos;
+	for (int i = 0; i < 8; ++i)
+	{
+		
+		for (int j = 0; j < 8; ++j)
+		{			
+			std::cout << pieceLayout[i][j].symbol;
+			printCoord.X = printCoord.X + 9;
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
+		}
+		printCoord.X = pos.X;
+		printCoord.Y = printCoord.Y + 6;
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
+	}
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), preserveColor);
 }
 
 bool Chess::GetColor(short& ret)

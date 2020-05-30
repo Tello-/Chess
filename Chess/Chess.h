@@ -33,23 +33,27 @@ public:
 	
 private:
 	void           initConsole         ();
-	void			initBoard			();
+	void 		initPieces          ();
+	void			hidecursor();
+	bool			GetColor            (short& ret);
+
+
 	void			reset			();
+
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
-	void			drawPrompt		(COORD) const;
-	
+	void			printWhiteSquare    (COORD, int, int);
+	void			printPieces          (COORD pos);
 	
 	void			movePiece		     ();
 
 	void			advanceState        ();
 
-	void			hidecursor();
-	void			printWhiteSquare(COORD, int, int);
-	bool			GetColor(short& ret);
+	
 	bool			boardNeedsRedraw;
 	int			currentPlayer;
 	bool			gameFinished;
 	COORD		boardCoord;
+	COORD		pieceCoord;
 	COORD		promptCoord;
 	COORD		inputCoord;
 	
