@@ -43,7 +43,8 @@ private:
 	void			reset			();
 
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
-	void			printSquare    (COORD, int, int);
+	void			printSquare		(COORD, int, int);
+	void			printSquare		(COORD, int, int, DWORD);
 	void			printPieces         (COORD pos);
 	
 	Piece		movePiece			(File sF, int sR, File dF, int dR);
@@ -68,6 +69,7 @@ private:
 
 	DWORD		p1BG;
 	DWORD		p2BG;
+	DWORD		boardColor;
 
 	
 	Piece		pieceLayout[8][File::H];

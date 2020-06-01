@@ -62,20 +62,21 @@ Chess::Chess()
 		boardCoord.Y = 0;
 		pieceCoord.X = 7;
 		pieceCoord.Y = 46;
-		squareColor = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
+		boardColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+		squareColor = BACKGROUND_RED;
 		player1Foreground = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
 		player2Foreground = NULL;
 		p1BG = NULL;
 		p2BG = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
 }
 
-int Chess::Run()
+int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, this should get rid ot the flickering.. or look at a double buffer...
 {	
 	initConsole();
 	initPieces();
-	printPieces(pieceCoord);
+	
 
-	bool swapDebug = true;
+	bool swapDebug = false; // remove after debug
 
 
 	while (true)
@@ -152,7 +153,7 @@ void Chess::drawBoard(COORD coord)
 {
 	if (boardNeedsRedraw)
 	{
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), boardColor);
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 		std::cout << boardAscii;
 		boardNeedsRedraw = false;
@@ -248,6 +249,39 @@ void Chess::printSquare(COORD pos, int width, int height) // TODO adapt this to 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), returnTemp);  // restore print color back to what it was
 }
 
+void Chess::printSquare(COORD pos, int width, int height, DWORD color)
+{
+	CONSOLE_SCREEN_BUFFER_INFO bufInfo;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &bufInfo);
+	auto preservedCursorPos = bufInfo.dwCursorPosition;
+
+	short preservedColor;
+	if (!GetColor(preservedColor))
+	{
+		// TODO handle failure
+	}
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+	std::vector<std::string> spaces;
+	for (int i = 0; i < width; ++i)
+	{
+		spaces.push_back(" ");
+	}
+
+	for (int i = 0; i < height; ++i)
+	{
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+
+		for (auto j : spaces)
+		{
+			std::cout << j;
+		}
+		pos.Y = pos.Y + 1;
+	}
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), preservedColor);  // restore print color back to what it was
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), preservedCursorPos);
+}
+
 void Chess::printPieces(COORD pos)
 {
 	short preserveColor;
@@ -257,19 +291,29 @@ void Chess::printPieces(COORD pos)
 
 	
 	COORD printCoord = pos;
+	COORD markerCoord;
+	markerCoord.X = printCoord.X - 1;
+	markerCoord.Y = printCoord.Y;
 	for (int i = 0; i < 8; ++i)
 	{		
 		for (int j = 0; j < 8; ++j)
 		{
 			if(pieceLayout[i][j].ownerID == 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), p1BG | player1Foreground);
 			if (pieceLayout[i][j].ownerID == 2) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),  p2BG | player2Foreground);
+			
+
+			if (pieceLayout[i][j].ownerID == 1) printSquare(markerCoord, 3, 1, p1BG);
+			if (pieceLayout[i][j].ownerID == 2) printSquare(markerCoord, 3, 1, p2BG);
 			if(pieceLayout[i][j].ownerID != 0) std::cout << pieceLayout[i][j].symbol;
 			printCoord.X = printCoord.X + 9;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
+			markerCoord.X = printCoord.X - 1;
+			markerCoord.Y = printCoord.Y;
 			
 		}
 		printCoord.X = pos.X;
 		printCoord.Y = printCoord.Y - 6;
+		markerCoord.X = printCoord.X - 1;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
 	}
 
