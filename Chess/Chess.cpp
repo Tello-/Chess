@@ -90,7 +90,7 @@ int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, t
 			swapPiece(H, 8, A, 4);
 			swapDebug = false;
 		}
-		printPieces(pieceCoord);
+		printPieces(pieceCoord, 9, -6);
 	}
 	return 0;
 }
@@ -282,41 +282,35 @@ void Chess::printSquare(COORD pos, int width, int height, DWORD color)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), preservedCursorPos);
 }
 
-void Chess::printPieces(COORD pos)
+
+void Chess::printPieces(COORD pos, int offset_x, int offset_y)
 {
 	short preserveColor;
 	GetColor(preserveColor);
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 
-
-	
 	COORD printCoord = pos;
 	COORD markerCoord;
 	markerCoord.X = printCoord.X - 1;
 	markerCoord.Y = printCoord.Y;
 	for (int i = 0; i < 8; ++i)
-	{		
+	{
 		for (int j = 0; j < 8; ++j)
 		{
-			if(pieceLayout[i][j].ownerID == 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), p1BG | player1Foreground);
-			if (pieceLayout[i][j].ownerID == 2) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),  p2BG | player2Foreground);
-			
+			if (pieceLayout[i][j].ownerID == 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), p1BG | player1Foreground);
+			if (pieceLayout[i][j].ownerID == 2) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), p2BG | player2Foreground);
 
-			if(pieceLayout[i][j].ownerID != 0) std::cout << pieceLayout[i][j].symbol;
-			printCoord.X = printCoord.X + 9;
+			if (pieceLayout[i][j].ownerID != 0) std::cout << pieceLayout[i][j].symbol;
+			printCoord.X = printCoord.X + offset_x;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
-			
+
 		}
 		printCoord.X = pos.X;
-		printCoord.Y = printCoord.Y - 6;
+		printCoord.Y = printCoord.Y + offset_y;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
 	}
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), preserveColor);
-}
-
-void Chess::printPieces(COORD pos, int offset_x, int offset_y)
-{
 }
 
 bool Chess::GetColor(short& ret)
