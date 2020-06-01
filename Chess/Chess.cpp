@@ -61,18 +61,33 @@ Chess::Chess()
 		boardCoord.X = 0;
 		boardCoord.Y = 0;
 		pieceCoord.X = 7;
-		pieceCoord.Y = 4;
+		pieceCoord.Y = 46;
+		squareColor = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
+		player1Foreground = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
+		player2Foreground = NULL;
+		p1BG = NULL;
+		p2BG = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
 }
 
 int Chess::Run()
 {	
 	initConsole();
 	initPieces();
+	printPieces(pieceCoord);
+
+	bool swapDebug = true;
+
+
 	while (true)
 	{
 		if (boardNeedsRedraw)
 		{
 			drawBoard(boardCoord);
+		}
+		if (swapDebug)
+		{
+			swapPiece(H, 8, A, 4);
+			swapDebug = false;
 		}
 		printPieces(pieceCoord);
 	}
@@ -151,7 +166,7 @@ void Chess::drawBoard(COORD coord)
 		tempCoord.X = 4;
 		for (int i = 0; i < 4; ++i)
 		{
-			printWhiteSquare(tempCoord, 7, 5);
+			printSquare(tempCoord, 7, 5);
 			tempCoord.X = tempCoord.X + 18;
 		}		
 		tempCoord.Y = tempCoord.Y + 12;
@@ -162,7 +177,7 @@ void Chess::drawBoard(COORD coord)
 		tempCoord.X = 13;
 		for (int i = 0; i < 4; ++i)
 		{
-			printWhiteSquare(tempCoord, 7, 5);
+			printSquare(tempCoord, 7, 5);
 			tempCoord.X = tempCoord.X + 18;
 		}
 		tempCoord.Y = tempCoord.Y + 12;
@@ -170,8 +185,25 @@ void Chess::drawBoard(COORD coord)
 }
 
 
-void Chess::movePiece()
+Piece Chess::movePiece(File sF, int sR, File dF, int dR)
 {
+	Piece returnPiece;
+	returnPiece = pieceLayout[dR][dF];
+	pieceLayout[dR][dF] = pieceLayout[sR][sF];
+	return returnPiece;
+}
+
+Piece Chess::removePiece(File sF, int sR)
+{
+	Piece returnPiece = pieceLayout[sR][sF];
+	pieceLayout[sR][sF].symbol = ' ';
+	pieceLayout[sR][sF].ownerID = 0;
+	return returnPiece;
+}
+
+void Chess::swapPiece(File sF, int sR, File dF, int dR)
+{
+	pieceLayout[sR][sF] = movePiece(sF, sR, dF, dR);
 }
 
 void Chess::advanceState()
@@ -188,14 +220,14 @@ void Chess::hidecursor()
 	SetConsoleCursorInfo(consoleHandle, &info);
 }
 
-void Chess::printWhiteSquare(COORD pos, int width, int height) // TODO adapt this to take any color
+void Chess::printSquare(COORD pos, int width, int height) // TODO adapt this to take any color
 {
 	short returnTemp;
 	if (!GetColor(returnTemp))
 	{
 		// TODO handle failure
 	}
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_BLUE);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), squareColor);
 	std::vector<std::string> spaces;
 	for (int i = 0; i < width; ++i)
 	{
@@ -220,21 +252,24 @@ void Chess::printPieces(COORD pos)
 {
 	short preserveColor;
 	GetColor(preserveColor);
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED| FOREGROUND_INTENSITY);
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 
+
+	
 	COORD printCoord = pos;
 	for (int i = 0; i < 8; ++i)
-	{
-		
+	{		
 		for (int j = 0; j < 8; ++j)
-		{			
-			std::cout << pieceLayout[i][j].symbol;
+		{
+			if(pieceLayout[i][j].ownerID == 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), p1BG | player1Foreground);
+			if (pieceLayout[i][j].ownerID == 2) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),  p2BG | player2Foreground);
+			if(pieceLayout[i][j].ownerID != 0) std::cout << pieceLayout[i][j].symbol;
 			printCoord.X = printCoord.X + 9;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
+			
 		}
 		printCoord.X = pos.X;
-		printCoord.Y = printCoord.Y + 6;
+		printCoord.Y = printCoord.Y - 6;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
 	}
 

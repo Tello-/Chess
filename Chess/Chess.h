@@ -13,6 +13,8 @@
 #define BOARD_FOOTPRINT_X 76
 #define BOARD_FOOTPRINT_Y 51
 
+
+
 struct Piece
 {
 	Piece() = default;
@@ -41,21 +43,32 @@ private:
 	void			reset			();
 
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
-	void			printWhiteSquare    (COORD, int, int);
-	void			printPieces          (COORD pos);
+	void			printSquare    (COORD, int, int);
+	void			printPieces         (COORD pos);
 	
-	void			movePiece		     ();
+	Piece		movePiece			(File sF, int sR, File dF, int dR);
+	Piece		removePiece         (File sF, int sR);
+	void			swapPiece			(File sF, int sR, File dF, int dR);
 
+	enum           State               { };
 	void			advanceState        ();
 
 	
 	bool			boardNeedsRedraw;
 	int			currentPlayer;
 	bool			gameFinished;
+
 	COORD		boardCoord;
 	COORD		pieceCoord;
 	COORD		promptCoord;
 	COORD		inputCoord;
+	DWORD		squareColor;
+	DWORD		player1Foreground;
+	DWORD		player2Foreground;
+
+	DWORD		p1BG;
+	DWORD		p2BG;
+
 	
 	Piece		pieceLayout[8][File::H];
 	
