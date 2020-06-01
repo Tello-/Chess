@@ -34,8 +34,9 @@ public:
 	
 private:
 	void           initConsole         ();
+	void			initBoard           ();
 	void 		initPieces          ();
-	void			hidecursor();
+	void			hidecursor          ();
 	bool			GetColor            (short& ret);
 
 
