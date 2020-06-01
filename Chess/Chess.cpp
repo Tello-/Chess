@@ -302,22 +302,21 @@ void Chess::printPieces(COORD pos)
 			if (pieceLayout[i][j].ownerID == 2) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),  p2BG | player2Foreground);
 			
 
-			if (pieceLayout[i][j].ownerID == 1) printSquare(markerCoord, 3, 1, p1BG);
-			if (pieceLayout[i][j].ownerID == 2) printSquare(markerCoord, 3, 1, p2BG);
 			if(pieceLayout[i][j].ownerID != 0) std::cout << pieceLayout[i][j].symbol;
 			printCoord.X = printCoord.X + 9;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
-			markerCoord.X = printCoord.X - 1;
-			markerCoord.Y = printCoord.Y;
 			
 		}
 		printCoord.X = pos.X;
 		printCoord.Y = printCoord.Y - 6;
-		markerCoord.X = printCoord.X - 1;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
 	}
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), preserveColor);
+}
+
+void Chess::printPieces(COORD pos, int offset_x, int offset_y)
+{
 }
 
 bool Chess::GetColor(short& ret)

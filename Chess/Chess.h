@@ -46,6 +46,7 @@ private:
 	void			printSquare		(COORD, int, int);
 	void			printSquare		(COORD, int, int, DWORD);
 	void			printPieces         (COORD pos);
+	void			printPieces		(COORD pos, int offset_x, int offset_y);
 	
 	Piece		movePiece			(File sF, int sR, File dF, int dR);
 	Piece		removePiece         (File sF, int sR);
