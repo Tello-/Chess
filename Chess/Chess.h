@@ -3,8 +3,17 @@
 #include <string>
 #include <Windows.h>
 
+
+#define CONSOLE_BUFFER_X 150
+#define CONSOLE_BUFFER_Y 52
+#define CONSOLE_WINDOW_X (CONSOLE_BUFFER_X - 1)
+#define CONSOLE_WINDOW_Y (CONSOLE_BUFFER_Y - 1)
 #define ASCII_LETTER_OFFSET 48
 #define ASCII_NUMBER_OFFSET 64
+#define BOARD_FOOTPRINT_X 76
+#define BOARD_FOOTPRINT_Y 51
+
+
 
 struct Piece
 {
@@ -16,7 +25,6 @@ struct Piece
 };
 
 
-enum State { P1_SOURCE_CHOICE = 1, P2_SOURCE_CHOICE = 2, P1_DEST_CHOICE, P2_DEST_CHOICE};
 enum File { A = 1, B, C, D, E, F, G, H };
 
 class Chess
@@ -26,34 +34,48 @@ public:
 	int			Run			     ();
 	
 private:
-	void			initBoard			();
-	void			reset			();
-	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
-	void			drawPrompt		(COORD) const;
-	
-	
-	void			getUserInputAndValidate   ();
-	void			getUserInput		();
-	bool			validateSyntax		(std::string untestedInput);
-	bool			validateOwner		(File file, int row, int potentialOwner);
-		
-	void			movePiece		     ();
+	void           initConsole         ();
+	void 		initPieces          ();
+	void			hidecursor();
+	bool			GetColor            (short& ret);
 
+
+	void			reset			();
+
+	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
+	void			printSquare		(COORD, int, int);
+	void			printSquare		(COORD, int, int, DWORD);
+	void			printPieces         (COORD pos);
+	void			printPieces		(COORD pos, int offset_x, int offset_y);
+	
+	Piece		movePiece			(File sF, int sR, File dF, int dR);
+	Piece		removePiece         (File sF, int sR);
+	void			swapPiece			(File sF, int sR, File dF, int dR);
+
+	enum           State               { };
 	void			advanceState        ();
 
 	
-	State		currentState;
+	bool			boardNeedsRedraw;
 	int			currentPlayer;
 	bool			gameFinished;
+
 	COORD		boardCoord;
+	COORD		pieceCoord;
 	COORD		promptCoord;
 	COORD		inputCoord;
-	std::string	userInput;
-	File			inputFile;
-	int			inputRow;
-	std::string	destination;
-	Piece		pieceLayout[8][File::H];
-	Piece		activePiece;
-	Piece		targetPiece; // note! blank squares are also considered a "Piece"
+	DWORD		squareColor;
+	DWORD		player1Foreground;
+	DWORD		player2Foreground;
 
+	DWORD		p1BG;
+	DWORD		p2BG;
+	DWORD		boardColor;
+
+	
+	Piece		pieceLayout[8][File::H];
+	
+	std::string    boardAscii;
 };
+
+

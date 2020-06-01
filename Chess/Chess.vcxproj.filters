@@ -21,10 +21,19 @@
     <ClCompile Include="Chess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Debug.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="board.txt" />
   </ItemGroup>
 </Project>

@@ -1,53 +1,116 @@
 #include "Chess.h"
+#include <vector>
 
 
 
 Chess::Chess() 
-	: gameFinished{ false }, boardCoord{ COORD() }, currentState{ State::P1_SOURCE_CHOICE }, currentPlayer{1}
+	: gameFinished{ false }, boardCoord{ COORD() }, pieceCoord{ COORD{} }, currentPlayer{ 1 }, boardNeedsRedraw{ true }
 {
-	promptCoord.X = 0;
-	promptCoord.Y = 52;
-	inputCoord.X = 48;
-	inputCoord.Y = promptCoord.Y;
-	initBoard();
+		boardAscii = "       A        B        C        D        E        F        G        H\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"8 ::       ::       ::       ::       ::       ::       ::       ::       :: 8\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"7 ::       ::       ::       ::       ::       ::       ::       ::       :: 7\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"6 ::       ::       ::       ::       ::       ::       ::       ::       :: 6\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"5 ::       ::       ::       ::       ::       ::       ::       ::       :: 5\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"4 ::       ::       ::       ::       ::       ::       ::       ::       :: 4\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"3 ::       ::       ::       ::       ::       ::       ::       ::       :: 3\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"2 ::       ::       ::       ::       ::       ::       ::       ::       :: 2\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"1 ::       ::       ::       ::       ::       ::       ::       ::       :: 1\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+				"       A        B        C        D        E        F        G        H\n";
+
+		boardCoord.X = 0;
+		boardCoord.Y = 0;
+		pieceCoord.X = 7;
+		pieceCoord.Y = 46;
+		boardColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+		squareColor = BACKGROUND_RED;
+		player1Foreground = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
+		player2Foreground = NULL;
+		p1BG = NULL;
+		p2BG = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
 }
 
-int Chess::Run()
+int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, this should get rid ot the flickering.. or look at a double buffer...
 {	
+	initConsole();
+	initPieces();
+	
+
+	bool swapDebug = false; // remove after debug
+
+
 	while (true)
 	{
-		
-		while (true)
+		if (boardNeedsRedraw)
 		{
 			drawBoard(boardCoord);
-			drawPrompt(promptCoord);
-			getUserInputAndValidate();
-			activePiece = pieceLayout[inputRow][inputFile];
-			advanceState();
-
-			drawPrompt(promptCoord);
-			do
-			{
-				getUserInputAndValidate();
-				targetPiece = pieceLayout[inputRow][inputFile];
-				// TODO check for range validation
-				// Check for target ownership validation...
-
-			} while ();
-
-			//TODO check if target piece is 1: Blank or 2: ActivePlayers own piece or 3: Occupied by other player
-			
-			
-			
-			advanceState();
 		}
-
-
+		if (swapDebug)
+		{
+			swapPiece(H, 8, A, 4);
+			swapDebug = false;
+		}
+		printPieces(pieceCoord);
 	}
 	return 0;
 }
 
-void Chess::initBoard()
+void Chess::initConsole()
+{	
+	COORD initCoord;
+	initCoord.X = CONSOLE_BUFFER_X;
+	initCoord.Y = CONSOLE_BUFFER_Y;
+	SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), initCoord);
+	SMALL_RECT initRect;
+	initRect.Top = 0;
+	initRect.Left = 0;
+	initRect.Right = CONSOLE_WINDOW_X;
+	initRect.Bottom = CONSOLE_WINDOW_Y;
+	SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, &initRect);	
+	hidecursor();
+}
+
+void Chess::initPieces()
 {
 	char temp[8] = { 'R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R' };
 	for (int i = 0; i < 8; ++i)
@@ -83,130 +146,184 @@ void Chess::initBoard()
 
 void Chess::reset()
 {
-	currentState = P1_SOURCE_CHOICE;
-	initBoard();
+	
 }
-
 
 void Chess::drawBoard(COORD coord)
 {
-	std::string file_bar	{ "     A         B        C        D        E        F        G        H     " };
-	std::string full_bar	{ " ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" };
-	std::string dotted_bar	{ " ::       ::       ::       ::       ::       ::       ::       ::       ::" };
-	std::string open_bar	{ "::   " };
-	std::string close_bar	{ "   ::" };
-	
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-
-	std::cout << file_bar << std::endl;
-	std::cout << full_bar << std::endl;
-	for (int iRow = 7; iRow >= 0; --iRow)
+	if (boardNeedsRedraw)
 	{
-		std::cout << dotted_bar << std::endl;
-		std::cout << dotted_bar << std::endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), boardColor);
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+		std::cout << boardAscii;
+		boardNeedsRedraw = false;
+	}
 
-		int iFile = 0;
-		for (int iCol = 0; iCol < 8; ++iCol)
+	COORD tempCoord;
+	
+	tempCoord.Y = 2;
+	for (int i = 0; i < 4; ++i)
+	{
+		tempCoord.X = 4;
+		for (int i = 0; i < 4; ++i)
 		{
-			iCol == 0 ? std::cout << iRow+1 << open_bar : std::cout << "   ";
-			std::cout << pieceLayout[iRow][iFile].symbol << close_bar;
-			++iFile;
+			printSquare(tempCoord, 7, 5);
+			tempCoord.X = tempCoord.X + 18;
+		}		
+		tempCoord.Y = tempCoord.Y + 12;
+	}
+	tempCoord.Y = 8;
+	for (int i = 0; i < 4; ++i)
+	{
+		tempCoord.X = 13;
+		for (int i = 0; i < 4; ++i)
+		{
+			printSquare(tempCoord, 7, 5);
+			tempCoord.X = tempCoord.X + 18;
 		}
-		std::cout << iRow + 1;
-		std::cout << std::endl;
-		std::cout << dotted_bar << std::endl;
-		std::cout << dotted_bar << std::endl;
-		std::cout << full_bar << std::endl;
-		
-	}
-	std::cout << file_bar << std::endl;
-}
-
-void Chess::drawPrompt(COORD coord) const
-{
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-	switch (currentState)
-	{
-	case P1_SOURCE_CHOICE:
-	case P2_SOURCE_CHOICE:
-		std::cout << "Player " << currentPlayer << ": Which piece would you like to move?: ";
-		break;
-	case P1_DEST_CHOICE:
-	case P2_DEST_CHOICE:
-		std::cout << "Player " << currentPlayer << ":    Where would you like to move to?: ";
+		tempCoord.Y = tempCoord.Y + 12;
 	}
 }
 
-void Chess::getUserInputAndValidate()
-{
-	do
-	{
-		getUserInput();
-	} while (!validateSyntax(userInput) ||
-		!validateOwner(File(userInput[1] - ASCII_LETTER_OFFSET),
-			userInput[0] - ASCII_NUMBER_OFFSET, currentPlayer));
 
-	inputFile = File(userInput[1] - ASCII_LETTER_OFFSET);
-	inputRow = userInput[0] - ASCII_NUMBER_OFFSET;
+Piece Chess::movePiece(File sF, int sR, File dF, int dR)
+{
+	Piece returnPiece;
+	returnPiece = pieceLayout[dR][dF];
+	pieceLayout[dR][dF] = pieceLayout[sR][sF];
+	return returnPiece;
 }
 
-void Chess::getUserInput()
+Piece Chess::removePiece(File sF, int sR)
 {
-	HANDLE hndl = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleCursorPosition(hndl, inputCoord);
-	CONSOLE_SCREEN_BUFFER_INFO bufferInfo;
-	GetConsoleScreenBufferInfo(hndl, &bufferInfo);
-	while (bufferInfo.dwCursorPosition.X != 0)
-	{
-		std::cout << " ";
-		GetConsoleScreenBufferInfo(hndl, &bufferInfo);
-	}
-	
-	SetConsoleCursorPosition(hndl, inputCoord);
-	std::cin >> userInput;
-	userInput.resize(2);
+	Piece returnPiece = pieceLayout[sR][sF];
+	pieceLayout[sR][sF].symbol = ' ';
+	pieceLayout[sR][sF].ownerID = 0;
+	return returnPiece;
 }
 
-bool Chess::validateSyntax(std::string untestedInput)
+void Chess::swapPiece(File sF, int sR, File dF, int dR)
 {
-	bool syntaxMatch{ false };
-	if (untestedInput.size() != 2  ||
-		untestedInput[0]	< 'A' ||
-		untestedInput[0]	> 'H' ||
-		untestedInput[1]-48 <  1  ||
-		untestedInput[1]-48	>  8) return false;
-	else return true;
-}
-
-bool Chess::validateOwner(File file, int row, int potentialOwner)
-{
-	if (pieceLayout[row-1][file-1].ownerID == potentialOwner) return true;
-	else return false;
-}
-
-void Chess::movePiece()
-{
+	pieceLayout[sR][sF] = movePiece(sF, sR, dF, dR);
 }
 
 void Chess::advanceState()
 {
-	switch (currentState)
+	
+}
+
+void Chess::hidecursor()
+{
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO info;
+	info.dwSize = 100;
+	info.bVisible = FALSE;
+	SetConsoleCursorInfo(consoleHandle, &info);
+}
+
+void Chess::printSquare(COORD pos, int width, int height) // TODO adapt this to take any color
+{
+	short returnTemp;
+	if (!GetColor(returnTemp))
 	{
-	case P1_SOURCE_CHOICE:
-		currentState = P1_DEST_CHOICE;
-		break;
-	case P2_SOURCE_CHOICE:
-		currentState = P2_DEST_CHOICE;
-		break;
-	case P1_DEST_CHOICE:
-		currentState = P2_SOURCE_CHOICE;
-		currentPlayer = 2;
-		break;
-	case P2_DEST_CHOICE:
-		currentState = P1_SOURCE_CHOICE;
-		currentPlayer = 1;
-		break;
-	default:
-		break;
+		// TODO handle failure
 	}
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), squareColor);
+	std::vector<std::string> spaces;
+	for (int i = 0; i < width; ++i)
+	{
+		spaces.push_back(" ");
+	}
+
+	for (int i = 0; i < 5; ++i)
+	{
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+		
+		for (auto j : spaces)
+		{
+			std::cout << j;
+		}
+		pos.Y = pos.Y + 1;
+	}
+	
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), returnTemp);  // restore print color back to what it was
+}
+
+void Chess::printSquare(COORD pos, int width, int height, DWORD color)
+{
+	CONSOLE_SCREEN_BUFFER_INFO bufInfo;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &bufInfo);
+	auto preservedCursorPos = bufInfo.dwCursorPosition;
+
+	short preservedColor;
+	if (!GetColor(preservedColor))
+	{
+		// TODO handle failure
+	}
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+	std::vector<std::string> spaces;
+	for (int i = 0; i < width; ++i)
+	{
+		spaces.push_back(" ");
+	}
+
+	for (int i = 0; i < height; ++i)
+	{
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+
+		for (auto j : spaces)
+		{
+			std::cout << j;
+		}
+		pos.Y = pos.Y + 1;
+	}
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), preservedColor);  // restore print color back to what it was
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), preservedCursorPos);
+}
+
+void Chess::printPieces(COORD pos)
+{
+	short preserveColor;
+	GetColor(preserveColor);
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+
+
+	
+	COORD printCoord = pos;
+	COORD markerCoord;
+	markerCoord.X = printCoord.X - 1;
+	markerCoord.Y = printCoord.Y;
+	for (int i = 0; i < 8; ++i)
+	{		
+		for (int j = 0; j < 8; ++j)
+		{
+			if(pieceLayout[i][j].ownerID == 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), p1BG | player1Foreground);
+			if (pieceLayout[i][j].ownerID == 2) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),  p2BG | player2Foreground);
+			
+
+			if(pieceLayout[i][j].ownerID != 0) std::cout << pieceLayout[i][j].symbol;
+			printCoord.X = printCoord.X + 9;
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
+			
+		}
+		printCoord.X = pos.X;
+		printCoord.Y = printCoord.Y - 6;
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), printCoord);
+	}
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), preserveColor);
+}
+
+void Chess::printPieces(COORD pos, int offset_x, int offset_y)
+{
+}
+
+bool Chess::GetColor(short& ret)
+{
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	if (!GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) return false;
+		
+	ret = info.wAttributes;
+	return true;
 }
