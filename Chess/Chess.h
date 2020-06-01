@@ -10,8 +10,7 @@
 #define CONSOLE_WINDOW_Y (CONSOLE_BUFFER_Y - 1)
 #define ASCII_LETTER_OFFSET 48
 #define ASCII_NUMBER_OFFSET 64
-#define BOARD_FOOTPRINT_X 76
-#define BOARD_FOOTPRINT_Y 51
+
 
 
 
@@ -43,9 +42,9 @@ private:
 	void			reset			();
 
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
+
 	void			printSquare		(COORD, int, int);
 	void			printSquare		(COORD, int, int, DWORD);
-	void			printPieces         (COORD pos);
 	void			printPieces		(COORD pos, int offset_x, int offset_y);
 	
 	Piece		movePiece			(File sF, int sR, File dF, int dR);
