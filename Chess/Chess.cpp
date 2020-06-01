@@ -4,36 +4,19 @@
 
 
 Chess::Chess() 
-	: gameFinished{ false }, current{State::INIT}, currentPlayer{ 1 }, boardNeedsRedraw{ true }
-{
-
-	
-	
-	
-
-		
-}
+	: gameFinished{ false }, current{State::INIT}, currentPlayer{ 1 }, boardNeedsRedraw{ true } {}
 
 int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, this should get rid ot the flickering.. or look at a double buffer...
 {	
 	initConsole();
 	initBoard();
-	initPieces();
-	
-
-	bool swapDebug = false; // remove after debug
-
+	initPieces();	
 
 	while (true)
 	{
 		if (boardNeedsRedraw)
 		{
 			drawBoard(boardCoord);
-		}
-		if (swapDebug)
-		{
-			swapPiece(H, 8, A, 4);
-			swapDebug = false;
 		}
 		printPieces(pieceCoord, 9, -6);
 	}
