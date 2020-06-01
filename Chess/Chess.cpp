@@ -4,7 +4,7 @@
 
 
 Chess::Chess() 
-	: gameFinished{ false }, boardCoord{ COORD() }, pieceCoord{ COORD{} }, currentPlayer{ 1 }, boardNeedsRedraw{ true }
+	: gameFinished{ false }, currentPlayer{ 1 }, boardNeedsRedraw{ true }
 {
 		boardAscii = "       A        B        C        D        E        F        G        H\n"
 				"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
@@ -209,7 +209,27 @@ void Chess::swapPiece(File sF, int sR, File dF, int dR)
 
 void Chess::advanceState()
 {
-	
+	switch (current)
+	{
+	case Chess::INIT:
+		break;
+	case Chess::P1_CHOICE:
+		break;
+	case Chess::P1_MOVE:
+		break;
+	case Chess::P2_CHOICE:
+		break;
+	case Chess::P2_MOVE:
+		break;
+	case Chess::VALIDATE_CHOICE:
+		break;
+	case Chess::VALIDATE_MOVE:
+		break;
+	case Chess::GAME_OVER:
+		break;
+	default:
+		break;
+	}
 }
 
 void Chess::hidecursor()
@@ -219,6 +239,7 @@ void Chess::hidecursor()
 	info.dwSize = 100;
 	info.bVisible = FALSE;
 	SetConsoleCursorInfo(consoleHandle, &info);
+
 }
 
 void Chess::printSquare(COORD pos, int width, int height) // TODO adapt this to take any color

@@ -51,7 +51,8 @@ private:
 	Piece		removePiece         (File sF, int sR);
 	void			swapPiece			(File sF, int sR, File dF, int dR);
 
-	enum           State               { };
+	enum           State               {INIT=0, P1_CHOICE, P1_MOVE, P2_CHOICE, P2_MOVE, VALIDATE_CHOICE, VALIDATE_MOVE, GAME_OVER };
+	State		current;
 	void			advanceState        ();
 
 	
