@@ -4,7 +4,8 @@
 
 
 Chess::Chess() 
-	: gameFinished{ false }, currentPlayer{ 1 }, boardNeedsRedraw{ true } {}
+	: Context( new InitState ), gameFinished {false}, currentPlayer{ 1 }, boardNeedsRedraw{ true }
+{}
 
 int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, this should get rid ot the flickering.. or look at a double buffer...
 {	

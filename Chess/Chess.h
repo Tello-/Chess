@@ -3,6 +3,8 @@
 #include <string>
 #include <Windows.h>
 #include <stack>
+#include "Context.hpp"
+#include "InitState.hpp"
 
 
 //:::::::::::::::::::CONSTANTS::::::::::::::::::::::::::::::::::::::::
@@ -27,10 +29,10 @@ struct Piece
 
 
 
-class Chess
+class Chess : public Context
 {
 public:
-				Chess		     ();
+	Chess();
 	int			Run			     ();
 	
 

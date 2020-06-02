@@ -140,11 +140,15 @@
   <ItemGroup>
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="InitState.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chess.h" />
     <ClInclude Include="Debug.hpp" />
+    <ClInclude Include="Context.hpp" />
+    <ClInclude Include="InitState.hpp" />
+    <ClInclude Include="IState.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="board.txt" />
