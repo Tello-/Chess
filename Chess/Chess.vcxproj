@@ -139,9 +139,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Chess.cpp" />
+    <ClCompile Include="Context.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="InitState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="P1TurnState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chess.h" />
@@ -149,6 +151,7 @@
     <ClInclude Include="Context.hpp" />
     <ClInclude Include="InitState.hpp" />
     <ClInclude Include="IState.hpp" />
+    <ClInclude Include="P1TurnState.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="board.txt" />

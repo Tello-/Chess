@@ -2,6 +2,7 @@
 
 void InitState::UpdateState()
 {
+
 }
 
 void InitState::RenderState()

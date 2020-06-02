@@ -16,25 +16,14 @@ private:
      IState* state_;
 
 public:
-     Context(IState* state) : state_(nullptr) {
-          this->TransitionTo(state);
-     }
-     ~Context() {
-          delete state_;
-     }
-     /**
-      * The Context allows changing the State object at runtime.
-      */
-     void TransitionTo(IState* state) {
-          std::cout << "Context: Transition to " << typeid(*state).name() << ".\n";
-          if (this->state_ != nullptr)
-               delete this->state_;
-          this->state_ = state;
-          this->state_->set_context(this);
-     }
-     /**
-      * The Context delegates part of its behavior to the current State object.
-      */
+     Context(IState* state);
+     ~Context();
+
+
+     /*The Context allows changing the State object at runtime.*/
+     void TransitionTo(IState* state);
+
+     /*The Context delegates part of its behavior to the current State object. */
      void Update() {
           this->state_->UpdateState();
      }

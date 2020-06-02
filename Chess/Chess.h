@@ -2,10 +2,11 @@
 #include <iostream>
 #include <string>
 #include <Windows.h>
-#include <stack>
+
+/*State Related Includes*/
 #include "Context.hpp"
 #include "InitState.hpp"
-
+/*;;;;;;;;;;;;;;;;;;;;;;;*/
 
 //:::::::::::::::::::CONSTANTS::::::::::::::::::::::::::::::::::::::::
 #define CONSOLE_BUFFER_X 150
@@ -60,14 +61,6 @@ private:
 	Piece		movePiece			(File sF, int sR, File dF, int dR);
 	Piece		removePiece         (File sF, int sR);
 	void			swapPiece			(File sF, int sR, File dF, int dR);
-
-	
-	
-	bool		     popState            ();
-	void           pushState           (State newState);
-
-	typedef std::stack<Chess::State> sStack;
-	sStack		stateStack;
 	
 	bool			boardNeedsRedraw;
 	int			currentPlayer;
