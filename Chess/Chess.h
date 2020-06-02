@@ -4,13 +4,14 @@
 #include <Windows.h>
 
 
+//:::::::::::::::::::CONSTANTS::::::::::::::::::::::::::::::::::::::::
 #define CONSOLE_BUFFER_X 150
 #define CONSOLE_BUFFER_Y 52
 #define CONSOLE_WINDOW_X (CONSOLE_BUFFER_X - 1)
 #define CONSOLE_WINDOW_Y (CONSOLE_BUFFER_Y - 1)
 #define ASCII_LETTER_OFFSET 48
 #define ASCII_NUMBER_OFFSET 64
-
+//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -24,14 +25,16 @@ struct Piece
 };
 
 
-enum File { A = 1, B, C, D, E, F, G, H };
-
 class Chess
 {
 public:
 				Chess		     ();
 	int			Run			     ();
 	
+
+private: 
+	enum           File                { A = 1, B, C, D, E, F, G, H };
+	enum           State               { INIT = 0, P1_CHOICE, P1_MOVE, P2_CHOICE, P2_MOVE, VALIDATE_CHOICE, VALIDATE_MOVE, GAME_OVER };
 private:
 	void           initConsole         ();
 	void			initBoard           ();
@@ -52,8 +55,8 @@ private:
 	Piece		removePiece         (File sF, int sR);
 	void			swapPiece			(File sF, int sR, File dF, int dR);
 
-	enum           State               {INIT=0, P1_CHOICE, P1_MOVE, P2_CHOICE, P2_MOVE, VALIDATE_CHOICE, VALIDATE_MOVE, GAME_OVER };
-	State		current;
+	
+	State		currentState;
 	void			advanceState        ();
 
 	
@@ -65,14 +68,13 @@ private:
 	COORD		pieceCoord;
 	COORD		promptCoord;
 	COORD		inputCoord;
+
+	DWORD		boardColor;
 	DWORD		squareColor;
 	DWORD		player1Foreground;
 	DWORD		player2Foreground;
-
 	DWORD		p1BG;
 	DWORD		p2BG;
-	DWORD		boardColor;
-
 	
 	Piece		pieceLayout[8][File::H];
 	

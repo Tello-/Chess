@@ -4,7 +4,7 @@
 
 
 Chess::Chess() 
-	: gameFinished{ false }, current{State::INIT}, currentPlayer{ 1 }, boardNeedsRedraw{ true } {}
+	: gameFinished{ false }, currentState{State::INIT}, currentPlayer{ 1 }, boardNeedsRedraw{ true } {}
 
 int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, this should get rid ot the flickering.. or look at a double buffer...
 {	
@@ -105,6 +105,7 @@ void Chess::initPieces()
 	player2Foreground = NULL;
 	p1BG = NULL;
 	p2BG = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
+
 	char temp[8] = { 'R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R' };
 	for (int i = 0; i < 8; ++i)
 	{
@@ -178,7 +179,6 @@ void Chess::drawBoard(COORD coord)
 	}
 }
 
-
 Piece Chess::movePiece(File sF, int sR, File dF, int dR)
 {
 	Piece returnPiece;
@@ -202,7 +202,7 @@ void Chess::swapPiece(File sF, int sR, File dF, int dR)
 
 void Chess::advanceState()
 {
-	switch (current)
+	switch (currentState)
 	{
 	case Chess::INIT:
 		break;
@@ -263,6 +263,7 @@ void Chess::printSquare(COORD pos, int width, int height) // TODO adapt this to 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), returnTemp);  // restore print color back to what it was
 }
 
+//TODO: change all color DWORDs to WORDs
 void Chess::printSquare(COORD pos, int width, int height, DWORD color)
 {
 	CONSOLE_SCREEN_BUFFER_INFO bufInfo;
@@ -295,7 +296,6 @@ void Chess::printSquare(COORD pos, int width, int height, DWORD color)
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), preservedColor);  // restore print color back to what it was
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), preservedCursorPos);
 }
-
 
 void Chess::printPieces(COORD pos, int offset_x, int offset_y)
 {
