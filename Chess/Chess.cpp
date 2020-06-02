@@ -4,7 +4,7 @@
 
 
 Chess::Chess() 
-	: gameFinished{ false }, currentState{State::INIT}, currentPlayer{ 1 }, boardNeedsRedraw{ true } {}
+	: gameFinished{ false }, currentPlayer{ 1 }, boardNeedsRedraw{ true } {}
 
 int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, this should get rid ot the flickering.. or look at a double buffer...
 {	
@@ -202,27 +202,21 @@ void Chess::swapPiece(File sF, int sR, File dF, int dR)
 
 void Chess::advanceState()
 {
-	switch (currentState)
+	
+}
+
+bool Chess::popState()
+{
+	if (!stateStack.empty())
 	{
-	case Chess::INIT:
-		break;
-	case Chess::P1_CHOICE:
-		break;
-	case Chess::P1_MOVE:
-		break;
-	case Chess::P2_CHOICE:
-		break;
-	case Chess::P2_MOVE:
-		break;
-	case Chess::VALIDATE_CHOICE:
-		break;
-	case Chess::VALIDATE_MOVE:
-		break;
-	case Chess::GAME_OVER:
-		break;
-	default:
-		break;
+		stateStack.pop();
+		return true;
 	}
+	return false;
+}
+
+void Chess::pushState(State newState)
+{
 }
 
 void Chess::hidecursor()

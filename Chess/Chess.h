@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <Windows.h>
+#include <stack>
 
 
 //:::::::::::::::::::CONSTANTS::::::::::::::::::::::::::::::::::::::::
@@ -23,6 +24,7 @@ struct Piece
 	char			symbol{ ' ' };
 	int*			offset; // a test offset...
 };
+
 
 
 class Chess
@@ -56,9 +58,12 @@ private:
 	void			swapPiece			(File sF, int sR, File dF, int dR);
 
 	
-	State		currentState;
 	void			advanceState        ();
+	bool		popState            ();
+	void           pushState           (State newState);
 
+	typedef std::stack<Chess::State> sStack;
+	sStack		stateStack;
 	
 	bool			boardNeedsRedraw;
 	int			currentPlayer;

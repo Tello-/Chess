@@ -1,3 +1,6 @@
 .vs
 Chess/Debug/*
 /Debug/*
+bash.exe.stackdump
+sh.exe.stackdump
+stty.exe.stackdump
