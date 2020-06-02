@@ -30,7 +30,16 @@
     <ClCompile Include="Context.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="P1TurnState.cpp">
+    <ClCompile Include="P1_Choice_State.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="P1_Move_State.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="P2_Choice_State.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="P2_Move_State.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,7 +59,16 @@
     <ClInclude Include="Context.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="P1TurnState.hpp">
+    <ClInclude Include="P1_Choice_State.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="P1_Move_State.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="P2_Choice_State.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="P2_Move_State.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

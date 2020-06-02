@@ -6,6 +6,11 @@
 /*State Related Includes*/
 #include "Context.hpp"
 #include "InitState.hpp"
+#include "P1_Choice_State.hpp"
+#include "P1_Move_State.hpp"
+#include "P2_Choice_State.hpp"
+#include "P2_Move_State.hpp"
+
 /*;;;;;;;;;;;;;;;;;;;;;;;*/
 
 //:::::::::::::::::::CONSTANTS::::::::::::::::::::::::::::::::::::::::

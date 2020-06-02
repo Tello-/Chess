@@ -13,6 +13,7 @@ public:
           this->mContext = context;
      }
 
+     virtual void ProcessInput() {}
      virtual void UpdateState() = 0;
      virtual void RenderState() = 0;
 };

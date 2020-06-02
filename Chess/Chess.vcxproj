@@ -143,7 +143,10 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="InitState.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="P1TurnState.cpp" />
+    <ClCompile Include="P1_Choice_State.cpp" />
+    <ClCompile Include="P1_Move_State.cpp" />
+    <ClCompile Include="P2_Choice_State.cpp" />
+    <ClCompile Include="P2_Move_State.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chess.h" />
@@ -151,7 +154,10 @@
     <ClInclude Include="Context.hpp" />
     <ClInclude Include="InitState.hpp" />
     <ClInclude Include="IState.hpp" />
-    <ClInclude Include="P1TurnState.hpp" />
+    <ClInclude Include="P1_Choice_State.hpp" />
+    <ClInclude Include="P1_Move_State.hpp" />
+    <ClInclude Include="P2_Choice_State.hpp" />
+    <ClInclude Include="P2_Move_State.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="board.txt" />
