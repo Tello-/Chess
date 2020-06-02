@@ -8,6 +8,7 @@ Chess::Chess()
 
 int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, this should get rid ot the flickering.. or look at a double buffer...
 {	
+	initState();
 	initConsole();
 	initBoard();
 	initPieces();	
@@ -138,6 +139,11 @@ void Chess::initPieces()
 	}
 }
 
+void Chess::initState()
+{
+	stateStack.push(State::INIT);
+}
+
 void Chess::reset()
 {
 	
@@ -200,11 +206,6 @@ void Chess::swapPiece(File sF, int sR, File dF, int dR)
 	pieceLayout[sR][sF] = movePiece(sF, sR, dF, dR);
 }
 
-void Chess::advanceState()
-{
-	
-}
-
 bool Chess::popState()
 {
 	if (!stateStack.empty())
@@ -217,6 +218,7 @@ bool Chess::popState()
 
 void Chess::pushState(State newState)
 {
+	stateStack.push(newState);
 }
 
 void Chess::hidecursor()
