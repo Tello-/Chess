@@ -46,7 +46,6 @@ private:
 	enum           File                { A = 1, B, C, D, E, F, G, H };
 	enum           State               { INIT = 0, P1_CHOICE, P1_MOVE, P2_CHOICE, P2_MOVE, VALIDATE_CHOICE, VALIDATE_MOVE, GAME_OVER };
 private:
-	void           initState           ();
 	void           initConsole         ();
 	void			initBoard           ();
 	void 		initPieces          ();
