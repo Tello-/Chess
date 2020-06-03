@@ -24,6 +24,10 @@ public:
      void TransitionTo(IState* state);
 
      /*The Context delegates part of its behavior to the current State object. */
+     void Input() {
+          this->state_->ProcessInput();
+     }
+     
      void Update() {
           this->state_->UpdateState();
      }
