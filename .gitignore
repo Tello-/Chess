@@ -4,3 +4,4 @@ Chess/Debug/*
 bash.exe.stackdump
 sh.exe.stackdump
 stty.exe.stackdump
+/Chess/ChessVerificatonNote.txt
