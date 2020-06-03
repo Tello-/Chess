@@ -27,10 +27,9 @@
 struct Piece
 {
 	Piece() = default;
-	Piece(int oID, char sym, int* ofs) : ownerID{ oID }, symbol{ sym } { offset = ofs; }
+	Piece(int oID, char sym, int* ofs) : ownerID{ oID }, symbol{ sym } {}
 	int			ownerID{ 0 };
 	char			symbol{ ' ' };
-	int*			offset; // a test offset...
 };
 
 
@@ -44,7 +43,6 @@ public:
 
 private: 
 	enum           File                { A = 1, B, C, D, E, F, G, H };
-	enum           State               { INIT = 0, P1_CHOICE, P1_MOVE, P2_CHOICE, P2_MOVE, VALIDATE_CHOICE, VALIDATE_MOVE, GAME_OVER };
 private:
 	void           initConsole         ();
 	void			initBoard           ();
@@ -52,9 +50,6 @@ private:
 	
 	void			hidecursor          ();
 	bool			GetColor            (short& ret);
-
-
-	void			reset			();
 
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
 
