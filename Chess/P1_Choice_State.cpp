@@ -2,7 +2,9 @@
 #include "ChessConstants.hpp"
 
 
-P1_Choice_State::P1_Choice_State()
+
+
+P1_Choice_State::P1_Choice_State(Piece pieces[8][8]) : pieceArray{ pieces }
 {
 }
 
@@ -23,4 +25,27 @@ void P1_Choice_State::RenderState()
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), tempCoord);
 
 	std::cout << P1_PROMPT_CHOOSE;
+	std::string inputString;
+	std::getline(std::cin, inputString);
+	inputString.resize(2);
+}
+
+bool P1_Choice_State::validateOwner(int sFile, int sRow) const
+{
+		bool ownerMatch{ false };
+
+		if (pieceArray[sRow][sFile].ownerID == 1) ownerMatch = true;
+
+
+		if (ownerMatch) return true;
+		else return false;
+}
+
+bool P1_Choice_State::validateSyntax(int sFile, int sRow) const
+{
+	return false;
+}
+
+void P1_Choice_State::parseInput(std::string input)
+{
 }
