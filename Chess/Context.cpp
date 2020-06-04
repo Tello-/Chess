@@ -13,7 +13,7 @@ Context::~Context()
 
 void Context::TransitionTo(IState* state)
 {
-     std::cout << "Context: Transition to " << typeid(*state).name() << ".\n";
+     //std::cout << "Context: Transition to " << typeid(*state).name() << ".\n";
      if (this->state_ != nullptr)
           delete this->state_;
      this->state_ = state;

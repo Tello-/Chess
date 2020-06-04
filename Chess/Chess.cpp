@@ -1,6 +1,6 @@
 #include "Chess.h"
 #include <vector>
-
+#include "ChessConstants.hpp"
 
 
 Chess::Chess() 
@@ -13,6 +13,7 @@ int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, t
 	initBoard();
 	initPieces();
 	drawBoard(boardCoord);
+	TransitionTo(new P1_Choice_State);
 	while (true)
 	{
 		Input();		// delegates rendering to current state
@@ -39,6 +40,7 @@ void Chess::initConsole()
 
 void Chess::initBoard()
 {
+	using namespace ChessConstants;
 	boardCoord.X = BOARD_COORD_X;
 	boardCoord.Y = BOARD_COORD_Y;
 	boardColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;

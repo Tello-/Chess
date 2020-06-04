@@ -16,10 +16,11 @@ void P1_Choice_State::UpdateState()
 
 void P1_Choice_State::RenderState()
 {
+	using namespace ChessConstants;
 	COORD tempCoord;
-	tempCoord.X = ChessConstants::PROMPT_COORD_X;
-	tempCoord.Y = ChessConstants::PROMPT_COORD_Y;
+	tempCoord.X = PROMPT_COORD_X;
+	tempCoord.Y = PROMPT_COORD_Y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), tempCoord);
 
-
+	std::cout << P1_PROMPT_CHOOSE;
 }

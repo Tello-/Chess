@@ -16,8 +16,14 @@ namespace ChessConstants
 	const int		BOARD_COORD_Y{ 0 };
 	const int		PIECE_COORD_X{ 7 };
 	const int		PIECE_COORD_Y{ 46 };
-	const int		PROMPT_COORD_X;
-	const int		PROMPT_COORD_Y;
-	const int		INPUT_COORD_X;
-	const int		INPUT_COORD_Y;
+	const int		PROMPT_COORD_X{80};
+	const int		PROMPT_COORD_Y{5};
+	const int		INPUT_COORD_X{ 60 };
+	const int		INPUT_COORD_Y{ 5 };
+
+	const std::string P1_PROMPT_CHOOSE{ "Player 1, choose a piece: " };
+	const std::string P2_PROMPT_CHOOSE{ "Player 2, choose a piece: " };
+
+	const std::string PROMPT_MOVE{ "Where to place?:  " };
+
 };
