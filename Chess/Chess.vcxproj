@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chess.h" />
+    <ClInclude Include="ChessConstants.hpp" />
     <ClInclude Include="Debug.hpp" />
     <ClInclude Include="Context.hpp" />
     <ClInclude Include="InitState.hpp" />

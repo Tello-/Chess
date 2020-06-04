@@ -13,15 +13,60 @@
 
 /*;;;;;;;;;;;;;;;;;;;;;;;*/
 
-//:::::::::::::::::::CONSTANTS::::::::::::::::::::::::::::::::::::::::
-#define CONSOLE_BUFFER_X 150
-#define CONSOLE_BUFFER_Y 52
-#define CONSOLE_WINDOW_X (CONSOLE_BUFFER_X - 1)
-#define CONSOLE_WINDOW_Y (CONSOLE_BUFFER_Y - 1)
-#define ASCII_LETTER_OFFSET 48
-#define ASCII_NUMBER_OFFSET 64
-//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+
+const std::string BOARD_ASCII = "       A        B        C        D        E        F        G        H\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"8 ::       ::       ::       ::       ::       ::       ::       ::       :: 8\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"7 ::       ::       ::       ::       ::       ::       ::       ::       :: 7\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"6 ::       ::       ::       ::       ::       ::       ::       ::       :: 6\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"5 ::       ::       ::       ::       ::       ::       ::       ::       :: 5\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"4 ::       ::       ::       ::       ::       ::       ::       ::       :: 4\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"3 ::       ::       ::       ::       ::       ::       ::       ::       :: 3\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"2 ::       ::       ::       ::       ::       ::       ::       ::       :: 2\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"1 ::       ::       ::       ::       ::       ::       ::       ::       :: 1\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
+						"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
+						"       A        B        C        D        E        F        G        H\n";
 
 
 struct Piece
@@ -34,7 +79,7 @@ struct Piece
 
 
 
-class Chess : public Context
+class Chess : public Context // inherits from context in order to use state system
 {
 public:
 	Chess();
@@ -42,10 +87,10 @@ public:
 	
 
 private: 
-	enum           File                { A = 1, B, C, D, E, F, G, H };
+	enum           File                { A = 1, B, C, D, E, F, G, H }; // columns of chess board
 private:
-	void           initConsole         ();
-	void			initBoard           ();
+	void           initConsole         (); // code to size and posistion the console for the purposes of the game
+	void			initBoard           (); 
 	void 		initPieces          ();
 	
 	void			hidecursor          ();
@@ -53,22 +98,19 @@ private:
 
 	void			drawBoard			(COORD); // Putting this here, no need for a Board.h class yet
 
-	void			printSquare		(COORD, int, int);
+	void			printSquare		(COORD, int, int); // not sure why I overloaded this without the color, probably can remove with some editing
 	void			printSquare		(COORD, int, int, DWORD);
-	void			printPieces		(COORD pos, int offset_x, int offset_y);
+	void			printPieces		(COORD pos, int offset_x, int offset_y); // prints piece symbols on their square
 	
 	Piece		movePiece			(File sF, int sR, File dF, int dR);
 	Piece		removePiece         (File sF, int sR);
 	void			swapPiece			(File sF, int sR, File dF, int dR);
-	
-	bool			boardNeedsRedraw;
+
+		
 	int			currentPlayer;
 	bool			gameFinished;
 
-	COORD		boardCoord;
-	COORD		pieceCoord;
-	COORD		promptCoord;
-	COORD		inputCoord;
+	COORD          boardCoord;
 
 	DWORD		boardColor;
 	DWORD		squareColor;
@@ -78,8 +120,6 @@ private:
 	DWORD		p2BG;
 	
 	Piece		pieceLayout[8][File::H];
-	
-	std::string    boardAscii;
 };
 
 

@@ -4,20 +4,20 @@
 
 
 Chess::Chess() 
-	: Context( new InitState ), gameFinished {false}, currentPlayer{ 1 }, boardNeedsRedraw{ true }
+	: Context( new InitState ), gameFinished {false}, currentPlayer{ 1 }
 {}
 
 int Chess::Run()  // TODO: Implement states in a way that can flag for redraw, this should get rid ot the flickering.. or look at a double buffer...
 {	
 	initConsole();
 	initBoard();
-	initPieces();	
+	initPieces();
 	drawBoard(boardCoord);
 	while (true)
 	{
-		Input();
-		Update();
-		Render(); // delegates rendering to current state
+		Input();		// delegates rendering to current state
+		Update();		// ^^^^^^
+		Render();		// ^^^^^^^^^^^
 	}
 	return 0;
 }
@@ -39,67 +39,14 @@ void Chess::initConsole()
 
 void Chess::initBoard()
 {
-	boardCoord.X = 0;
-	boardCoord.Y = 0;
+	boardCoord.X = BOARD_COORD_X;
+	boardCoord.Y = BOARD_COORD_Y;
 	boardColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
-	squareColor = BACKGROUND_RED;
-	boardAscii = "       A        B        C        D        E        F        G        H\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"8 ::       ::       ::       ::       ::       ::       ::       ::       :: 8\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"7 ::       ::       ::       ::       ::       ::       ::       ::       :: 7\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"6 ::       ::       ::       ::       ::       ::       ::       ::       :: 6\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"5 ::       ::       ::       ::       ::       ::       ::       ::       :: 5\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"4 ::       ::       ::       ::       ::       ::       ::       ::       :: 4\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"3 ::       ::       ::       ::       ::       ::       ::       ::       :: 3\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"2 ::       ::       ::       ::       ::       ::       ::       ::       :: 2\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"1 ::       ::       ::       ::       ::       ::       ::       ::       :: 1\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::       ::       ::       ::       ::       ::       ::       ::       ::\n"
-		"  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n"
-		"       A        B        C        D        E        F        G        H\n";
+	squareColor = BACKGROUND_RED;	
 }
 
 void Chess::initPieces()
 {
-	pieceCoord.X = 7;
-	pieceCoord.Y = 46;
 	player1Foreground = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
 	player2Foreground = NULL;
 	p1BG = NULL;
@@ -139,13 +86,10 @@ void Chess::initPieces()
 
 void Chess::drawBoard(COORD coord)
 {
-	if (boardNeedsRedraw)
-	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), boardColor);
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-		std::cout << boardAscii;
-		boardNeedsRedraw = false;
-	}
+		std::cout <<	BOARD_ASCII;
+		
 
 	COORD tempCoord;
 	
@@ -193,8 +137,6 @@ void Chess::swapPiece(File sF, int sR, File dF, int dR)
 {
 	pieceLayout[sR][sF] = movePiece(sF, sR, dF, dR);
 }
-
-
 
 void Chess::hidecursor()
 {
